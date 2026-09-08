@@ -346,6 +346,42 @@ export const portfolioData: PortfolioData = {
         "Zero external native dependencies for seamless cross-platform installation"
       ],
       gradient: "from-slate-700 via-zinc-800 to-neutral-900"
+    },
+    {
+      id: "neural-flow-analytics",
+      title: "NeuralFlow Real-Time AI Telemetry Processor",
+      description: "High-throughput streaming telemetry pipeline processing 100k events/sec with PyTorch anomaly detection and live Next.js visual dashboard.",
+      detailedDescription: "Architected a real-time event analytics engine leveraging Python FastAPI microservices, Redis Pub/Sub, and PyTorch for live time-series anomaly detection in cloud infrastructure log streams.",
+      category: "Web Applications",
+      technologies: ["Next.js 16", "Python", "FastAPI", "PyTorch", "Tailwind CSS", "Redis"],
+      githubUrl: "https://github.com/sumiran/neural-flow-analytics",
+      liveUrl: "https://neuralflow.example.com",
+      featured: true,
+      metrics: "Sub-50ms inference • 100k events/sec",
+      highlights: [
+        "Real-time time-series anomaly detection pipeline over WebSocket streams",
+        "Interactive HTML5 canvas visualization of neural network layer weights",
+        "Automated model export to ONNX runtime for ultra-low latency inference"
+      ],
+      gradient: "from-cyan-600 via-blue-600 to-indigo-600"
+    },
+    {
+      id: "hyper-store-db",
+      title: "HyperStore Distributed Consensus Key-Value Engine",
+      description: "Distributed consensus key-value database built in Go using the Raft algorithm, supporting multi-region linearizable reads and zero-downtime cluster rebalancing.",
+      detailedDescription: "Implemented a Raft consensus engine in Go with gRPC communication, LSM-tree storage engines, and dynamic cluster membership changes for high-availability distributed storage.",
+      category: "Backend",
+      technologies: ["Go", "Raft Consensus", "gRPC", "RocksDB", "Docker"],
+      githubUrl: "https://github.com/sumiran/hyperstore-kv",
+      liveUrl: "https://github.com/sumiran/hyperstore-kv#readme",
+      featured: false,
+      metrics: "Linearizable reads • 99.999% SLA",
+      highlights: [
+        "Raft consensus protocol with dynamic leader election and log compaction",
+        "Zero-downtime cluster node re-balancing under heavy write workloads",
+        "Low-latency gRPC RPC interface with multi-region state replication"
+      ],
+      gradient: "from-emerald-600 via-teal-600 to-indigo-600"
     }
   ],
 

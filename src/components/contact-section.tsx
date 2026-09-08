@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import confetti from "canvas-confetti";
+import { motion } from "framer-motion";
 import { portfolioData } from "@/data/portfolio-data";
-import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -17,8 +17,12 @@ import {
   AlertCircle,
   Clock,
   Copy,
-  Check
+  Check,
+  Terminal,
+  Sparkles,
+  Cpu
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function ContactSection() {
   const { personal } = portfolioData;
@@ -92,8 +96,8 @@ export function ContactSection() {
       // Fire celebratory confetti!
       try {
         confetti({
-          particleCount: 80,
-          spread: 70,
+          particleCount: 85,
+          spread: 75,
           origin: { y: 0.7 },
         });
       } catch {
@@ -101,7 +105,10 @@ export function ContactSection() {
       }
     } catch (err: unknown) {
       setSubmitStatus("error");
-      const message = err instanceof Error ? err.message : "Something went wrong. Please try again or email directly.";
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again or email directly.";
       setServerMessage(message);
     } finally {
       setIsSubmitting(false);
@@ -115,124 +122,173 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      id="contact"
+      className="py-24 sm:py-32 relative overflow-hidden bg-gradient-to-b from-[#eef2ff] via-[#f8fafc] to-[#f1f5f9] dark:from-[#080b14] dark:via-[#0c1020] dark:to-[#090d1a] transition-colors duration-500"
+    >
+      {/* Ambient Aurora Glow Lights */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[900px] h-[350px] sm:h-[450px] bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-cyan-500/20 dark:from-indigo-600/20 dark:via-purple-600/25 dark:to-cyan-600/20 blur-[140px] rounded-full pointer-events-none -z-10" />
+
+      {/* Subtle Dot Grid Mask */}
+      <div className="absolute inset-0 bg-dot-pattern opacity-40 dark:opacity-25 pointer-events-none -z-10 [mask-image:radial-gradient(ellipse_65%_55%_at_50%_50%,#000_70%,transparent_100%)]" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center space-y-3 mb-16">
-          <Badge variant="default" className="gap-1.5 py-1 px-3 text-xs">
-            <Mail className="w-3.5 h-3.5" /> Contact
-          </Badge>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
-            Let&apos;s Build Something Exceptional
-          </h2>
-          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl">
-            Have a project in mind, an engineering role, or a technical inquiry? Drop me a message and I&apos;ll respond within 24 hours.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          {/* Left Column: Contact Cards & Info */}
-          <div className="lg:col-span-5 space-y-6">
-            <Card className="border-border/70 shadow-sm">
-              <CardContent className="p-6 sm:p-8 space-y-6">
-                <div>
-                  <h3 className="text-xl font-bold text-foreground mb-1">
-                    Contact Channels
-                  </h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground">
-                    Direct access for inquiries, architectural consulting, and full-time engineering discussions.
-                  </p>
-                </div>
-
-                {/* Email Info Card */}
-                <div className="flex items-start gap-4 p-4 rounded-xl bg-secondary/40 border border-border/50">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs text-muted-foreground font-medium">Direct Email</p>
-                    <a
-                      href={`mailto:${personal.email}`}
-                      className="text-sm font-semibold text-foreground hover:text-primary transition-colors truncate block"
-                    >
-                      {personal.email}
-                    </a>
-                  </div>
-                  <button
-                    onClick={copyEmail}
-                    className="p-2 rounded-lg border border-border/60 hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
-                    title="Copy Email"
-                  >
-                    {copied ? (
-                      <Check className="w-4 h-4 text-emerald-500" />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
-                  </button>
-                </div>
-
-                {/* Location Info Card */}
-                <div className="flex items-start gap-4 p-4 rounded-xl bg-secondary/40 border border-border/50">
-                  <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shrink-0">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground font-medium">Location</p>
-                    <p className="text-sm font-semibold text-foreground">
-                      {personal.location}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      Open to global remote and hybrid roles
-                    </p>
-                  </div>
-                </div>
-
-                {/* Response Time SLA */}
-                <div className="flex items-center gap-3 text-xs text-muted-foreground px-1">
-                  <Clock className="w-4 h-4 text-primary shrink-0" />
-                  <span>Average response time: <strong>under 24 hours</strong></span>
-                </div>
-
-                {/* Social Networks */}
-                <div className="pt-4 border-t border-border/50">
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
-                    Social Networks & Profiles
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <a
-                      href={personal.social.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-2 rounded-xl border border-border/70 bg-secondary/40 text-xs font-semibold text-foreground hover:border-primary/50 transition-colors"
-                    >
-                      <GithubIcon className="w-4 h-4" /> GitHub
-                    </a>
-                    <a
-                      href={personal.social.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-2 rounded-xl border border-border/70 bg-secondary/40 text-xs font-semibold text-foreground hover:border-primary/50 transition-colors"
-                    >
-                      <LinkedinIcon className="w-4 h-4" /> LinkedIn
-                    </a>
-                    <a
-                      href={personal.social.twitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-2 rounded-xl border border-border/70 bg-secondary/40 text-xs font-semibold text-foreground hover:border-primary/50 transition-colors"
-                    >
-                      <TwitterIcon className="w-4 h-4" /> X
-                    </a>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col items-center text-center space-y-2 mb-10"
+        >
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-semibold backdrop-blur-md shadow-xs select-none font-mono">
+            <Mail className="w-3.5 h-3.5 text-indigo-500" />
+            <span>TRANSMISSION_GATEWAY // DIRECT_COMMUNICATION</span>
           </div>
 
-          {/* Right Column: Contact Form */}
-          <div className="lg:col-span-7">
-            <Card className="border-border/70 shadow-lg">
-              <CardContent className="p-6 sm:p-8">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white">
+            Let&apos;s Build Something{" "}
+            <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-500 dark:from-indigo-400 dark:via-purple-400 dark:to-cyan-400 bg-clip-text text-transparent">
+              Exceptional
+            </span>
+          </h2>
+          <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base max-w-xl font-normal">
+            Have a project in mind, an engineering role, or a technical inquiry? Drop me a message and I&apos;ll respond within 24 hours.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left Column: Contact Channels & Info */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="lg:col-span-5 space-y-6"
+          >
+            <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl p-6 sm:p-8 shadow-xl space-y-6">
+              <div>
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+                  <Cpu className="w-4 h-4 text-indigo-500" />
+                  Contact Channels
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                  Direct access for inquiries, architectural consulting, and full-time engineering discussions.
+                </p>
+              </div>
+
+              {/* Direct Email Card */}
+              <div className="flex items-start gap-3.5 p-4 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/15 border border-indigo-500/20">
+                <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                  <Mail className="w-5 h-5" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-mono font-semibold text-indigo-600 dark:text-indigo-400">Direct Email</p>
+                  <a
+                    href={`mailto:${personal.email}`}
+                    className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors truncate block"
+                  >
+                    {personal.email}
+                  </a>
+                </div>
+                <button
+                  onClick={copyEmail}
+                  className="p-2 rounded-lg border border-indigo-500/30 hover:bg-indigo-500/20 text-slate-700 dark:text-slate-200 transition-colors cursor-pointer shrink-0"
+                  title="Copy Email"
+                >
+                  {copied ? (
+                    <Check className="w-4 h-4 text-emerald-500" />
+                  ) : (
+                    <Copy className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+
+              {/* Location Card */}
+              <div className="flex items-start gap-3.5 p-4 rounded-xl bg-cyan-500/10 dark:bg-cyan-500/15 border border-cyan-500/20">
+                <div className="w-10 h-10 rounded-xl bg-cyan-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-mono font-semibold text-cyan-600 dark:text-cyan-400">Primary Location</p>
+                  <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
+                    {personal.location}
+                  </p>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                    Open to global remote and hybrid engineering roles
+                  </p>
+                </div>
+              </div>
+
+              {/* Response Time SLA */}
+              <div className="flex items-center gap-2 text-xs font-mono text-slate-600 dark:text-slate-300 px-1">
+                <Clock className="w-4 h-4 text-indigo-500 shrink-0" />
+                <span>Response SLA: <strong className="text-indigo-600 dark:text-indigo-400">under 24 hours</strong></span>
+              </div>
+
+              {/* Social Networks */}
+              <div className="pt-4 border-t border-slate-200/80 dark:border-slate-800/80 space-y-3">
+                <p className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
+                  SOCIAL_NETWORKS
+                </p>
+                <div className="flex items-center gap-2.5">
+                  <a
+                    href={personal.social.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-800/80 text-xs font-bold text-slate-800 dark:text-slate-200 hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-all"
+                  >
+                    <GithubIcon className="w-4 h-4" /> GitHub
+                  </a>
+                  <a
+                    href={personal.social.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-800/80 text-xs font-bold text-slate-800 dark:text-slate-200 hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-all"
+                  >
+                    <LinkedinIcon className="w-4 h-4" /> LinkedIn
+                  </a>
+                  <a
+                    href={personal.social.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-800/80 text-xs font-bold text-slate-800 dark:text-slate-200 hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-all"
+                  >
+                    <TwitterIcon className="w-4 h-4" /> X
+                  </a>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Column: Interactive Terminal Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="lg:col-span-7"
+          >
+            <div className="rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-[#0f1424] text-slate-200 shadow-xl overflow-hidden font-mono text-xs">
+              {/* macOS Header */}
+              <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-800 select-none">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-rose-500" />
+                  <div className="w-3 h-3 rounded-full bg-amber-500" />
+                  <div className="w-3 h-3 rounded-full bg-emerald-500" />
+                  <span className="ml-2 text-slate-400 font-semibold text-[11px] flex items-center gap-1.5">
+                    <Terminal className="w-3.5 h-3.5 text-indigo-400" /> sumiran@dev:~/contact_gateway --dispatch
+                  </span>
+                </div>
+                <div className="hidden sm:flex items-center gap-2 text-[10px] text-slate-400">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                  <span>READY_TO_DISPATCH</span>
+                </div>
+              </div>
+
+              {/* Form Body */}
+              <div className="p-6 sm:p-8 font-sans">
                 <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                   {/* Honeypot for spam bots */}
                   <input
@@ -249,9 +305,9 @@ export function ContactSection() {
 
                   {/* Feedback Status Alert */}
                   {submitStatus === "success" && (
-                    <div className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-800 dark:text-emerald-200 flex items-start gap-3 animate-in fade-in">
-                      <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-                      <div className="text-xs sm:text-sm">
+                    <div className="p-4 rounded-xl border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 flex items-start gap-3 animate-in fade-in font-mono text-xs">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                      <div>
                         <p className="font-bold">Message Sent Successfully!</p>
                         <p className="mt-0.5">{serverMessage}</p>
                       </div>
@@ -259,9 +315,9 @@ export function ContactSection() {
                   )}
 
                   {submitStatus === "error" && (
-                    <div className="p-4 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-800 dark:text-rose-200 flex items-start gap-3 animate-in fade-in">
-                      <AlertCircle className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
-                      <div className="text-xs sm:text-sm">
+                    <div className="p-4 rounded-xl border border-rose-500/40 bg-rose-500/15 text-rose-300 flex items-start gap-3 animate-in fade-in font-mono text-xs">
+                      <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                      <div>
                         <p className="font-bold">Submission Failed</p>
                         <p className="mt-0.5">{serverMessage}</p>
                       </div>
@@ -271,8 +327,8 @@ export function ContactSection() {
                   {/* Name & Email Inputs */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-foreground">
-                        Your Name <span className="text-rose-500">*</span>
+                      <label className="text-xs font-mono font-semibold text-slate-300 flex items-center justify-between">
+                        <span>Your Name <span className="text-rose-400">*</span></span>
                       </label>
                       <Input
                         value={formData.name}
@@ -281,17 +337,20 @@ export function ContactSection() {
                           if (errors.name) setErrors({ ...errors, name: "" });
                         }}
                         placeholder="John Doe"
-                        className={errors.name ? "border-rose-500 focus-visible:ring-rose-500" : ""}
+                        className={cn(
+                          "bg-slate-900/90 border-slate-800 text-slate-100 placeholder:text-slate-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-xs rounded-xl",
+                          errors.name && "border-rose-500 focus:border-rose-500"
+                        )}
                         disabled={isSubmitting}
                       />
                       {errors.name && (
-                        <p className="text-[11px] text-rose-500 font-medium">{errors.name}</p>
+                        <p className="text-[11px] font-mono text-rose-400">{errors.name}</p>
                       )}
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-foreground">
-                        Your Email <span className="text-rose-500">*</span>
+                      <label className="text-xs font-mono font-semibold text-slate-300 flex items-center justify-between">
+                        <span>Your Email <span className="text-rose-400">*</span></span>
                       </label>
                       <Input
                         type="email"
@@ -301,18 +360,21 @@ export function ContactSection() {
                           if (errors.email) setErrors({ ...errors, email: "" });
                         }}
                         placeholder="john@example.com"
-                        className={errors.email ? "border-rose-500 focus-visible:ring-rose-500" : ""}
+                        className={cn(
+                          "bg-slate-900/90 border-slate-800 text-slate-100 placeholder:text-slate-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-xs rounded-xl",
+                          errors.email && "border-rose-500 focus:border-rose-500"
+                        )}
                         disabled={isSubmitting}
                       />
                       {errors.email && (
-                        <p className="text-[11px] text-rose-500 font-medium">{errors.email}</p>
+                        <p className="text-[11px] font-mono text-rose-400">{errors.email}</p>
                       )}
                     </div>
                   </div>
 
                   {/* Subject Input */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-foreground">
+                    <label className="text-xs font-mono font-semibold text-slate-300">
                       Subject (Optional)
                     </label>
                     <Input
@@ -320,15 +382,16 @@ export function ContactSection() {
                       onChange={(e) =>
                         setFormData({ ...formData, subject: e.target.value })
                       }
-                      placeholder="Project Inquiry / Job Opportunity / Architecture Discussion"
+                      placeholder="Project Inquiry / Engineering Role / Architectural Discussion"
+                      className="bg-slate-900/90 border-slate-800 text-slate-100 placeholder:text-slate-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-xs rounded-xl"
                       disabled={isSubmitting}
                     />
                   </div>
 
-                  {/* Message Area */}
+                  {/* Message Input */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-foreground">
-                      Message <span className="text-rose-500">*</span>
+                    <label className="text-xs font-mono font-semibold text-slate-300 flex items-center justify-between">
+                      <span>Message <span className="text-rose-400">*</span></span>
                     </label>
                     <Textarea
                       rows={5}
@@ -338,38 +401,41 @@ export function ContactSection() {
                         if (errors.message) setErrors({ ...errors, message: "" });
                       }}
                       placeholder="Hi Sumiran, I'd like to discuss a project..."
-                      className={errors.message ? "border-rose-500 focus-visible:ring-rose-500" : ""}
+                      className={cn(
+                        "bg-slate-900/90 border-slate-800 text-slate-100 placeholder:text-slate-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-xs rounded-xl resize-none",
+                        errors.message && "border-rose-500 focus:border-rose-500"
+                      )}
                       disabled={isSubmitting}
                     />
                     {errors.message && (
-                      <p className="text-[11px] text-rose-500 font-medium">{errors.message}</p>
+                      <p className="text-[11px] font-mono text-rose-400">{errors.message}</p>
                     )}
                   </div>
 
-                  {/* Submit Button */}
+                  {/* Submit Action Button */}
                   <div className="pt-2">
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full sm:w-auto min-w-[180px] gap-2 font-semibold shadow-indigo-500/20"
+                      className="w-full sm:w-auto min-w-[200px] gap-2 font-mono font-bold text-xs py-3 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white shadow-lg shadow-indigo-500/30 cursor-pointer border-0 transition-all duration-200"
                     >
                       {isSubmitting ? (
                         <>
                           <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          Sending Message...
+                          DISPATCHING_MESSAGE...
                         </>
                       ) : (
                         <>
                           <Send className="w-4 h-4" />
-                          Send Message
+                          DISPATCH MESSAGE
                         </>
                       )}
                     </Button>
                   </div>
                 </form>
-              </CardContent>
-            </Card>
-          </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
