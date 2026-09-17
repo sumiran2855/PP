@@ -23,6 +23,7 @@ import {
   Layers
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Scroll3DWrapper } from "./ui/scroll-3d-wrapper";
 
 export function ExperienceSection() {
   const { experience, education, certifications } = portfolioData;
@@ -31,7 +32,7 @@ export function ExperienceSection() {
   return (
     <section
       id="experience"
-      className="py-24 sm:py-32 relative overflow-hidden bg-gradient-to-b from-[#eef2ff] via-[#f8fafc] to-[#f1f5f9] dark:from-[#080b14] dark:via-[#0c1020] dark:to-[#090d1a] transition-colors duration-500"
+      className="scroll-mt-28 sm:scroll-mt-32 py-20 sm:py-32 relative overflow-hidden bg-gradient-to-b from-[#eef2ff] via-[#f8fafc] to-[#f1f5f9] dark:from-[#080b14] dark:via-[#0c1020] dark:to-[#090d1a] transition-colors duration-500"
     >
       {/* Ambient Aurora Glow Lights */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[900px] h-[350px] sm:h-[450px] bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-cyan-500/20 dark:from-indigo-600/20 dark:via-purple-600/25 dark:to-cyan-600/20 blur-[140px] rounded-full pointer-events-none -z-10" />
@@ -73,16 +74,20 @@ export function ExperienceSection() {
           className="rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-[#0f1424] text-slate-200 shadow-xl p-4 sm:p-5 mb-10 overflow-hidden font-mono text-xs"
         >
           {/* Window Title & Indicators */}
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800 select-none">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-rose-500" />
-              <div className="w-3 h-3 rounded-full bg-amber-500" />
-              <div className="w-3 h-3 rounded-full bg-emerald-500" />
-              <span className="ml-2 text-slate-400 font-semibold text-[11px] flex items-center gap-1.5">
-                <Terminal className="w-3.5 h-3.5 text-indigo-400" /> sumiran@dev:~/career_milestones
+          <div className="flex items-center justify-between pb-3 border-b border-slate-800 select-none gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="flex items-center gap-1.5 shrink-0">
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-500" />
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500" />
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500" />
+              </div>
+              <span className="ml-1 sm:ml-2 text-slate-400 font-semibold text-[11px] flex items-center gap-1.5 truncate">
+                <Terminal className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                <span className="hidden sm:inline">sumiran@dev:~/career_milestones</span>
+                <span className="sm:hidden">~/milestones</span>
               </span>
             </div>
-            <div className="hidden sm:flex items-center gap-2 text-[10px] text-slate-400">
+            <div className="hidden sm:flex items-center gap-2 text-[10px] text-slate-400 shrink-0">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <span>STATUS: VERIFIED_TIMELINE</span>
             </div>
@@ -178,9 +183,10 @@ export function ExperienceSection() {
           </div>
         </motion.div>
 
-        {/* TAB CONTENTS WITH ANIMATE PRESENCE */}
-        <AnimatePresence mode="wait">
-          {/* Tab 1: Work Experience Timeline */}
+        {/* TAB CONTENTS WITH SCROLL 3D PERSPECTIVE & ANIMATE PRESENCE */}
+        <Scroll3DWrapper intensity={4} depth={20}>
+          <AnimatePresence mode="wait">
+            {/* Tab 1: Work Experience Timeline */}
           {activeTab === "experience" && (
             <motion.div
               key="tab-experience"
@@ -408,7 +414,8 @@ export function ExperienceSection() {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-    </section>
-  );
+      </Scroll3DWrapper>
+    </div>
+  </section>
+);
 }

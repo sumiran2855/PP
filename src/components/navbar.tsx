@@ -9,12 +9,13 @@ import { Menu, X, FileText, ArrowUpRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Experience", href: "#experience" },
-  { label: "Focus", href: "#focus" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/#about" },
+  { label: "Skills", href: "/#skills" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Experience", href: "/#experience" },
+  { label: "Reviews", href: "/#feedback" },
+  { label: "Focus", href: "/#focus" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export function Navbar() {
@@ -27,7 +28,7 @@ export function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = NAV_ITEMS.map((item) => item.href.substring(1));
+      const sections = NAV_ITEMS.map((item) => item.href.replace(/^\/?#/, ""));
       const scrollPosition = window.scrollY + 200;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -61,10 +62,11 @@ export function Navbar() {
             className="group flex items-center gap-2.5 text-foreground font-bold tracking-tight text-lg"
           >
             <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-600 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/30 group-hover:rotate-6 group-hover:scale-110 transition-all duration-300 font-mono text-xs font-bold">
-              &lt;/&gt;
+              {"</>"}
             </div>
             <span className="font-extrabold text-slate-900 dark:text-white tracking-tight text-lg">
-              Sumiran<span className="bg-gradient-to-r from-indigo-500 to-cyan-500 bg-clip-text text-transparent font-mono text-base">.dev</span>
+              <span>Sumiran</span>
+              <span className="bg-gradient-to-r from-indigo-500 to-cyan-500 bg-clip-text text-transparent font-mono text-base">.dev</span>
             </span>
           </Link>
 
@@ -74,11 +76,12 @@ export function Navbar() {
             className="hidden md:flex items-center gap-1 bg-slate-100/60 dark:bg-slate-800/50 p-1 rounded-full border border-slate-200/60 dark:border-slate-700/60 backdrop-blur-md"
           >
             {NAV_ITEMS.map((item) => {
-              const isActive = activeSection === item.href.substring(1);
+              const targetId = item.href.replace(/^\/?#/, "");
+              const isActive = activeSection === targetId;
               const isHovered = hoveredNav === item.href;
 
               return (
-                <a
+                <Link
                   key={item.label}
                   href={item.href}
                   onMouseEnter={() => setHoveredNav(item.href)}
@@ -97,7 +100,7 @@ export function Navbar() {
                     />
                   )}
                   {item.label}
-                </a>
+                </Link>
               );
             })}
           </nav>
@@ -137,21 +140,26 @@ export function Navbar() {
               className="pointer-events-auto md:hidden mt-2 border border-slate-200/90 dark:border-slate-800/90 bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl rounded-2xl px-4 py-5 shadow-2xl overflow-hidden"
             >
               <div className="flex flex-col space-y-1.5">
-                {NAV_ITEMS.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={cn(
-                      "px-4 py-2.5 rounded-xl text-sm font-semibold transition-all",
-                      activeSection === item.href.substring(1)
-                        ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold border border-indigo-500/20"
-                        : "text-slate-600 dark:text-slate-300 hover:text-foreground hover:bg-slate-100 dark:hover:bg-slate-900"
-                    )}
-                  >
-                    {item.label}
-                  </a>
-                ))}
+                {NAV_ITEMS.map((item) => {
+                  const targetId = item.href.replace(/^\/?#/, "");
+                  const isActive = activeSection === targetId;
+
+                  return (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={cn(
+                        "px-4 py-2.5 rounded-xl text-sm font-semibold transition-all",
+                        isActive
+                          ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold border border-indigo-500/20"
+                          : "text-slate-600 dark:text-slate-300 hover:text-foreground hover:bg-slate-100 dark:hover:bg-slate-900"
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
                 <div className="pt-3 mt-2 border-t border-slate-200/80 dark:border-slate-800/80 flex flex-col gap-2">
                   <Link
                     href="/resume"
@@ -160,12 +168,12 @@ export function Navbar() {
                   >
                     <Button variant="outline" className="w-full justify-center gap-2 rounded-xl font-semibold">
                       <FileText className="w-4 h-4 text-indigo-500" />
-                      View Resume
+                      <span>View Resume</span>
                     </Button>
                   </Link>
-                  <a href="#contact" onClick={() => setMobileMenuOpen(false)}>
+                  <a href="/#contact" onClick={() => setMobileMenuOpen(false)}>
                     <Button className="w-full justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold">
-                      Get in Touch
+                      <span>Get in Touch</span>
                       <ArrowUpRight className="w-4 h-4" />
                     </Button>
                   </a>

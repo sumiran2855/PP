@@ -3,22 +3,18 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { portfolioData } from "@/data/portfolio-data";
-import { Badge } from "./ui/badge";
 import {
   Compass,
   GitPullRequest,
   GitCommit,
   Star,
-  Quote,
   Flame,
   Radio,
   ExternalLink,
-  Terminal,
-  Cpu,
-  Sparkles,
-  Layers
+  Terminal
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Scroll3DWrapper } from "./ui/scroll-3d-wrapper";
 
 // Interactive 3D Card for Current Focus items
 function Focus3DCard({
@@ -159,7 +155,7 @@ export function CurrentFocusSection() {
   return (
     <section
       id="focus"
-      className="py-24 sm:py-32 relative overflow-hidden bg-gradient-to-b from-[#f1f5f9] via-[#f8fafc] to-[#eef2ff] dark:from-[#090d1a] dark:via-[#0e1324] dark:to-[#080b14] transition-colors duration-500"
+      className="scroll-mt-28 sm:scroll-mt-32 py-20 sm:py-32 relative overflow-hidden bg-gradient-to-b from-[#f1f5f9] via-[#f8fafc] to-[#eef2ff] dark:from-[#090d1a] dark:via-[#0e1324] dark:to-[#080b14] transition-colors duration-500"
     >
       {/* Ambient Aurora Glow Lights */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[900px] h-[350px] sm:h-[450px] bg-gradient-to-tr from-cyan-500/20 via-indigo-500/20 to-purple-500/20 dark:from-cyan-600/20 dark:via-indigo-600/25 dark:to-purple-600/20 blur-[140px] rounded-full pointer-events-none -z-10" />
@@ -192,147 +188,108 @@ export function CurrentFocusSection() {
           </p>
         </motion.div>
 
-        {/* CURRENT FOCUS CARDS GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {currentFocus.map((item, idx) => (
-            <Focus3DCard key={idx} item={item} />
-          ))}
-        </div>
-
-        {/* GITHUB OPEN SOURCE ACTIVITY TERMINAL */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-[#0f1424] text-slate-200 shadow-xl p-5 sm:p-7 mb-14 overflow-hidden font-mono text-xs space-y-6"
-        >
-          {/* Header Bar */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-800 select-none">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-rose-500" />
-              <div className="w-3 h-3 rounded-full bg-amber-500" />
-              <div className="w-3 h-3 rounded-full bg-emerald-500" />
-              <span className="ml-2 text-slate-300 font-bold text-xs flex items-center gap-2">
-                <Terminal className="w-4 h-4 text-indigo-400" />
-                sumiran@dev:~/github_telemetry --matrix
-              </span>
-            </div>
-            <a
-              href="https://github.com/sumiran"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs font-sans font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 cursor-pointer transition-colors"
-            >
-              View GitHub Profile <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-          </div>
-
-          {/* Contribution Heatmap Grid */}
-          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 overflow-x-auto">
-            <div className="flex gap-1.5 min-w-[580px] justify-between">
-              {githubWeeks.map((week, wIdx) => (
-                <div key={wIdx} className="flex flex-col gap-1.5">
-                  {week.map((level, dIdx) => (
-                    <motion.div
-                      key={dIdx}
-                      whileHover={{ scale: 1.3 }}
-                      className={cn(
-                        "w-3 h-3 rounded-[3px] border transition-colors cursor-pointer",
-                        getHeatmapColor(level)
-                      )}
-                      title={`Activity level: ${level}`}
-                    />
-                  ))}
-                </div>
-              ))}
-            </div>
-            <div className="flex items-center justify-between pt-3 text-[11px] text-slate-400">
-              <span>Past 6 Months Contribution Heatmap</span>
-              <div className="flex items-center gap-1.5">
-                <span>Less</span>
-                <div className="w-2.5 h-2.5 rounded-[2px] bg-slate-800 border border-slate-700" />
-                <div className="w-2.5 h-2.5 rounded-[2px] bg-emerald-950/60" />
-                <div className="w-2.5 h-2.5 rounded-[2px] bg-emerald-700" />
-                <div className="w-2.5 h-2.5 rounded-[2px] bg-emerald-500" />
-                <div className="w-2.5 h-2.5 rounded-[2px] bg-emerald-400 shadow-[0_0_4px_rgba(52,211,153,0.8)]" />
-                <span>More</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Engineering Metrics Telemetry Counters */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 font-sans pt-1">
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800/80 flex flex-col justify-between">
-              <span className="text-xs text-slate-400 font-mono flex items-center gap-1.5">
-                <GitCommit className="w-3.5 h-3.5 text-indigo-400" /> Total Commits
-              </span>
-              <p className="text-2xl font-black font-mono text-white mt-1">1,840+</p>
-            </div>
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800/80 flex flex-col justify-between">
-              <span className="text-xs text-slate-400 font-mono flex items-center gap-1.5">
-                <GitPullRequest className="w-3.5 h-3.5 text-purple-400" /> PRs Merged
-              </span>
-              <p className="text-2xl font-black font-mono text-white mt-1">210+</p>
-            </div>
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800/80 flex flex-col justify-between">
-              <span className="text-xs text-slate-400 font-mono flex items-center gap-1.5">
-                <Star className="w-3.5 h-3.5 text-amber-400" /> Repo Stars
-              </span>
-              <p className="text-2xl font-black font-mono text-white mt-1">450+</p>
-            </div>
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800/80 flex flex-col justify-between">
-              <span className="text-xs text-slate-400 font-mono flex items-center gap-1.5">
-                <Compass className="w-3.5 h-3.5 text-cyan-400" /> Open Source Repos
-              </span>
-              <p className="text-2xl font-black font-mono text-white mt-1">18</p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* COLLEAGUE & LEADERSHIP ENDORSEMENTS */}
-        <div className="space-y-6">
-          <div className="text-center space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-mono font-semibold">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-500" /> ENDORSEMENTS // TESTIMONIALS
-            </div>
-            <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
-              Colleague & Leadership Endorsements
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-lg mx-auto">
-              Feedback from engineering leaders and product partners I&apos;ve collaborated with.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {testimonials.map((t, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ y: -4 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl p-6 sm:p-8 shadow-lg hover:shadow-2xl hover:border-indigo-500/50 transition-all duration-300 flex flex-col justify-between space-y-4 overflow-hidden"
-              >
-                <Quote className="w-10 h-10 text-indigo-500/15 dark:text-indigo-400/20 absolute top-4 right-4 pointer-events-none" />
-                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed italic relative z-10 font-normal">
-                  &ldquo;{t.content}&rdquo;
-                </p>
-                <div className="pt-3 border-t border-slate-200/80 dark:border-slate-800/80 flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center font-bold text-white text-xs shrink-0 shadow-md font-mono">
-                    {t.name.slice(0, 2).toUpperCase()}
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                      {t.name}
-                    </h4>
-                    <p className="text-xs font-mono text-slate-500 dark:text-slate-400">
-                      {t.role} • <span className="text-indigo-600 dark:text-indigo-400 font-semibold">{t.company}</span>
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
+        {/* CURRENT FOCUS CARDS GRID WITH SCROLL 3D PERSPECTIVE */}
+        <Scroll3DWrapper intensity={4} depth={20}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            {currentFocus.map((item, idx) => (
+              <Focus3DCard key={idx} item={item} />
             ))}
           </div>
-        </div>
+
+          {/* GITHUB OPEN SOURCE ACTIVITY TERMINAL */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-[#0f1424] text-slate-200 shadow-xl p-5 sm:p-7 overflow-hidden font-mono text-xs space-y-6"
+          >
+            {/* Header Bar */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-800 select-none">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-500" />
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500" />
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500" />
+                </div>
+                <span className="ml-1 sm:ml-2 text-slate-300 font-bold text-xs flex items-center gap-2 truncate">
+                  <Terminal className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <span className="hidden sm:inline">sumiran@dev:~/github_telemetry --matrix</span>
+                  <span className="sm:hidden">~/github_telemetry</span>
+                </span>
+              </div>
+              <a
+                href="https://github.com/sumiran"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 text-xs font-sans font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 cursor-pointer transition-colors"
+              >
+                View GitHub Profile <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+
+            {/* Contribution Heatmap Grid */}
+            <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 overflow-x-auto">
+              <div className="flex gap-1.5 min-w-[580px] justify-between">
+                {githubWeeks.map((week, wIdx) => (
+                  <div key={wIdx} className="flex flex-col gap-1.5">
+                    {week.map((level, dIdx) => (
+                      <motion.div
+                        key={dIdx}
+                        whileHover={{ scale: 1.3 }}
+                        className={cn(
+                          "w-3 h-3 rounded-[3px] border transition-colors cursor-pointer",
+                          getHeatmapColor(level)
+                        )}
+                        title={`Activity level: ${level}`}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center justify-between pt-3 text-[11px] text-slate-400">
+                <span>Past 6 Months Contribution Heatmap</span>
+                <div className="flex items-center gap-1.5">
+                  <span>Less</span>
+                  <div className="w-2.5 h-2.5 rounded-[2px] bg-slate-800 border border-slate-700" />
+                  <div className="w-2.5 h-2.5 rounded-[2px] bg-emerald-950/60" />
+                  <div className="w-2.5 h-2.5 rounded-[2px] bg-emerald-700" />
+                  <div className="w-2.5 h-2.5 rounded-[2px] bg-emerald-500" />
+                  <div className="w-2.5 h-2.5 rounded-[2px] bg-emerald-400 shadow-[0_0_4px_rgba(52,211,153,0.8)]" />
+                  <span>More</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Engineering Metrics Telemetry Counters */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 font-sans pt-1">
+              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800/80 flex flex-col justify-between">
+                <span className="text-xs text-slate-400 font-mono flex items-center gap-1.5">
+                  <GitCommit className="w-3.5 h-3.5 text-indigo-400" /> Total Commits
+                </span>
+                <p className="text-2xl font-black font-mono text-white mt-1">1,840+</p>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800/80 flex flex-col justify-between">
+                <span className="text-xs text-slate-400 font-mono flex items-center gap-1.5">
+                  <GitPullRequest className="w-3.5 h-3.5 text-purple-400" /> PRs Merged
+                </span>
+                <p className="text-2xl font-black font-mono text-white mt-1">210+</p>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800/80 flex flex-col justify-between">
+                <span className="text-xs text-slate-400 font-mono flex items-center gap-1.5">
+                  <Star className="w-3.5 h-3.5 text-amber-400" /> Repo Stars
+                </span>
+                <p className="text-2xl font-black font-mono text-white mt-1">450+</p>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800/80 flex flex-col justify-between">
+                <span className="text-xs text-slate-400 font-mono flex items-center gap-1.5">
+                  <Compass className="w-3.5 h-3.5 text-cyan-400" /> Open Source Repos
+                </span>
+                <p className="text-2xl font-black font-mono text-white mt-1">18</p>
+              </div>
+            </div>
+          </motion.div>
+        </Scroll3DWrapper>
       </div>
     </section>
   );

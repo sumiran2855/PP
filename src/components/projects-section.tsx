@@ -1,11 +1,12 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { portfolioData, Project } from "@/data/portfolio-data";
 import { Badge } from "./ui/badge";
-import { ProjectModal } from "./project-modal";
 import { GithubIcon } from "./icons";
+import { Scroll3DWrapper } from "./ui/scroll-3d-wrapper";
 import {
   FolderGit2,
   ExternalLink,
@@ -25,10 +26,8 @@ import { cn } from "@/lib/utils";
 // Helper component for mouse tilt interactive 3D effect
 function Project3DCard({
   project,
-  onInspect,
 }: {
   project: Project;
-  onInspect: (project: Project) => void;
 }) {
   const cardRef = React.useRef<HTMLDivElement>(null);
   const [rotateX, setRotateX] = React.useState(0);
@@ -113,20 +112,23 @@ function Project3DCard({
 
             {/* Hover Backdrop Overlay with Quick Inspect Button */}
             <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-slate-950/50 backdrop-blur-xs transition-all duration-300">
-              <button
-                onClick={() => onInspect(project)}
+              <Link
+                href={`/projects/${project.id}`}
                 className="px-4 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs shadow-xl border border-indigo-500/40 flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-all duration-200 cursor-pointer hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600"
               >
                 <Maximize2 className="w-3.5 h-3.5 text-indigo-500 group-hover:text-white" />
-                Inspect Architecture
-              </button>
+                View Project Details
+              </Link>
             </div>
           </div>
 
           {/* Project Details Content */}
           <div className="p-5 space-y-3">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200 flex items-center justify-between">
-              <span>{project.title}</span>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
+              <Link href={`/projects/${project.id}`} className="hover:underline flex items-center justify-between">
+                <span>{project.title}</span>
+                <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-indigo-500" />
+              </Link>
             </h3>
 
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2">
@@ -173,12 +175,12 @@ function Project3DCard({
 
         {/* Card Footer Actions */}
         <div className="px-5 py-3.5 border-t border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/40 font-mono text-xs">
-          <button
-            onClick={() => onInspect(project)}
+          <Link
+            href={`/projects/${project.id}`}
             className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center gap-1 cursor-pointer transition-colors"
           >
             Deep Dive <ArrowUpRight className="w-3.5 h-3.5" />
-          </button>
+          </Link>
 
           <div className="flex items-center gap-2">
             {project.githubUrl && (
@@ -217,7 +219,6 @@ export function ProjectsSection() {
 
   const [selectedCategory, setSelectedCategory] = React.useState<string>("All");
   const [searchQuery, setSearchQuery] = React.useState<string>("");
-  const [selectedProject, setSelectedProject] = React.useState<Project | null>(null);
   const [visibleCount, setVisibleCount] = React.useState<number>(6);
 
   // Filter projects by category and real-time search query
@@ -259,7 +260,7 @@ export function ProjectsSection() {
   return (
     <section
       id="projects"
-      className="py-24 sm:py-32 relative overflow-hidden bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#eef2ff] dark:from-[#090d1a] dark:via-[#0e1324] dark:to-[#080b14] transition-colors duration-500"
+      className="scroll-mt-28 sm:scroll-mt-32 py-20 sm:py-32 relative overflow-hidden bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#eef2ff] dark:from-[#090d1a] dark:via-[#0e1324] dark:to-[#080b14] transition-colors duration-500"
     >
       {/* Ambient Aurora Glow Lights */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[900px] h-[350px] sm:h-[450px] bg-gradient-to-tr from-cyan-500/20 via-indigo-500/20 to-purple-500/20 dark:from-cyan-600/20 dark:via-indigo-600/25 dark:to-purple-600/20 blur-[140px] rounded-full pointer-events-none -z-10" />
@@ -301,16 +302,20 @@ export function ProjectsSection() {
           className="rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-[#0f1424] text-slate-200 shadow-xl p-4 sm:p-5 mb-8 overflow-hidden font-mono text-xs"
         >
           {/* Window Title & Indicators */}
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800 select-none">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-rose-500" />
-              <div className="w-3 h-3 rounded-full bg-amber-500" />
-              <div className="w-3 h-3 rounded-full bg-emerald-500" />
-              <span className="ml-2 text-slate-400 font-semibold text-[11px] flex items-center gap-1.5">
-                <Terminal className="w-3.5 h-3.5 text-indigo-400" /> sumiran@dev:~/featured_projects
+          <div className="flex items-center justify-between pb-3 border-b border-slate-800 select-none gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="flex items-center gap-1.5 shrink-0">
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-500" />
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500" />
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500" />
+              </div>
+              <span className="ml-1 sm:ml-2 text-slate-400 font-semibold text-[11px] flex items-center gap-1.5 truncate">
+                <Terminal className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                <span className="hidden sm:inline">sumiran@dev:~/featured_projects</span>
+                <span className="sm:hidden">~/projects</span>
               </span>
             </div>
-            <div className="hidden sm:flex items-center gap-2 text-[10px] text-slate-400">
+            <div className="hidden sm:flex items-center gap-2 text-[10px] text-slate-400 shrink-0">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <span>SYSTEM_STATUS: ONLINE</span>
             </div>
@@ -383,38 +388,39 @@ export function ProjectsSection() {
           </div>
         </motion.div>
 
-        {/* PROJECTS GRID WITH ANIMATE PRESENCE */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatePresence mode="popLayout">
-            {displayedProjects.length > 0 ? (
-              displayedProjects.map((project) => (
-                <Project3DCard
-                  key={project.id}
-                  project={project}
-                  onInspect={(p) => setSelectedProject(p)}
-                />
-              ))
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="col-span-full py-12 text-center border border-dashed border-slate-300 dark:border-slate-800 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md"
-              >
-                <Layers className="w-8 h-8 mx-auto text-slate-400 mb-2" />
-                <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  No projects found for query &ldquo;{searchQuery}&rdquo; in category [{selectedCategory}].
-                </p>
-                <button
-                  onClick={() => handleSearchChange("")}
-                  className="mt-3 text-xs font-mono text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+        {/* PROJECTS GRID WITH SCROLL 3D PERSPECTIVE & ANIMATE PRESENCE */}
+        <Scroll3DWrapper intensity={4} depth={20}>
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <AnimatePresence mode="popLayout">
+              {displayedProjects.length > 0 ? (
+                displayedProjects.map((project) => (
+                  <Project3DCard
+                    key={project.id}
+                    project={project}
+                  />
+                ))
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="col-span-full py-12 text-center border border-dashed border-slate-300 dark:border-slate-800 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md"
                 >
-                  Reset search filter
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
+                  <Layers className="w-8 h-8 mx-auto text-slate-400 mb-2" />
+                  <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    No projects found for query &ldquo;{searchQuery}&rdquo; in category [{selectedCategory}].
+                  </p>
+                  <button
+                    onClick={() => handleSearchChange("")}
+                    className="mt-3 text-xs font-mono text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+                  >
+                    Reset search filter
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </Scroll3DWrapper>
 
         {/* LOAD MORE / VIEW MORE BUTTON */}
         {filteredProjects.length > visibleCount && (
@@ -435,13 +441,6 @@ export function ProjectsSection() {
             </span>
           </motion.div>
         )}
-
-        {/* Modal for detailed architectural inspection */}
-        <ProjectModal
-          project={selectedProject}
-          isOpen={!!selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
       </div>
     </section>
   );

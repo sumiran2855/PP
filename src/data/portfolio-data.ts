@@ -11,6 +11,12 @@ export interface Project {
   metrics?: string;
   highlights?: string[];
   gradient: string;
+  role: string;
+  timeTaken: string;
+  clientOrDomain?: string;
+  teamSize?: string;
+  challenges?: string[];
+  deliverables?: string[];
 }
 
 export interface SkillItem {
@@ -62,6 +68,19 @@ export interface Testimonial {
   company: string;
   content: string;
   avatarUrl?: string;
+  rating?: number;
+  project?: string;
+  verified?: boolean;
+  date?: string;
+}
+
+export interface AchievementCounter {
+  id: string;
+  label: string;
+  count: number;
+  suffix: string;
+  description: string;
+  iconName: "Users" | "FolderCheck" | "Clock" | "ShieldCheck" | "GitBranch" | "Award";
 }
 
 export interface PortfolioData {
@@ -85,6 +104,7 @@ export interface PortfolioData {
       detail: string;
     }[];
   };
+  achievementCounters: AchievementCounter[];
   skills: SkillCategory[];
   projects: Project[];
   projectCategories: string[];
@@ -126,6 +146,41 @@ export const portfolioData: PortfolioData = {
       { label: "Code Reviews & Mentorship", value: "200+", detail: "Cultivating engineering excellence" }
     ]
   },
+
+  achievementCounters: [
+    {
+      id: "clients-served",
+      label: "Customers Served",
+      count: 45,
+      suffix: "+",
+      description: "Startups, scaleups, and enterprise clients delivered worldwide",
+      iconName: "Users"
+    },
+    {
+      id: "projects-completed",
+      label: "Projects Finished",
+      count: 35,
+      suffix: "+",
+      description: "Production web applications, microservices & cloud architectures",
+      iconName: "FolderCheck"
+    },
+    {
+      id: "engineering-hours",
+      label: "Engineering Hours",
+      count: 8500,
+      suffix: "+",
+      description: "Hands-on distributed systems design & high-performance frontend",
+      iconName: "Clock"
+    },
+    {
+      id: "uptime-sla",
+      label: "Production Uptime SLA",
+      count: 99.98,
+      suffix: "%",
+      description: "Average availability maintained across mission-critical services",
+      iconName: "ShieldCheck"
+    }
+  ],
 
   skills: [
     {
@@ -255,7 +310,21 @@ export const portfolioData: PortfolioData = {
         "Configurable routing rules dynamically loaded without restarting gateway pods",
         "Comprehensive observability dashboard visualizing real-time HTTP error rates"
       ],
-      gradient: "from-blue-600 via-indigo-600 to-cyan-500"
+      gradient: "from-blue-600 via-indigo-600 to-cyan-500",
+      role: "Lead Systems Architect & Core Go Engineer",
+      timeTaken: "3.5 Months",
+      clientOrDomain: "Cloud Infrastructure & High-Concurrency Telemetry",
+      teamSize: "Solo Architect & Developer",
+      challenges: [
+        "Handling 50,000+ requests/sec with minimal GC pauses in Go",
+        "Implementing distributed Redis cluster token bucket algorithms without race conditions",
+        "Zero-downtime hot-reloading of routing rules during heavy traffic spikes"
+      ],
+      deliverables: [
+        "Custom Go distributed API gateway binary with Prometheus telemetry export",
+        "Interactive Next.js 16 real-time monitoring dashboard with WebSockets",
+        "Automated multi-stage Docker containerization and Kubernetes Helm chart"
+      ]
     },
     {
       id: "devsync-platform",
@@ -273,7 +342,21 @@ export const portfolioData: PortfolioData = {
         "WASM-powered language runner supporting Python and JavaScript execution locally in browser",
         "Custom shadcn/ui themed components with split-screen multi-editor capabilities"
       ],
-      gradient: "from-purple-600 via-pink-600 to-rose-500"
+      gradient: "from-purple-600 via-pink-600 to-rose-500",
+      role: "Lead Full-Stack Engineer & Frontend Architect",
+      timeTaken: "2.5 Months",
+      clientOrDomain: "Developer Collaboration & Real-Time SaaS",
+      teamSize: "Core Team of 2 Engineers",
+      challenges: [
+        "Conflict-free state synchronization across multiple simultaneous typing cursors",
+        "Sandboxed in-browser code execution using WebAssembly without server-side compute costs",
+        "Sub-30ms peer-to-peer latency over WebSockets"
+      ],
+      deliverables: [
+        "CRDT synchronization engine powered by Yjs and WebSocket backplanes",
+        "WASM Python & JS runner directly in the browser environment",
+        "Accessible dark-mode-first code editor UI with collaborative cursors and presence indicators"
+      ]
     },
     {
       id: "k8s-autoscale-operator",
@@ -291,7 +374,21 @@ export const portfolioData: PortfolioData = {
         "Packaged with production-ready Helm chart and automated test suites in Kind",
         "Integrates with Slack & PagerDuty webhooks for auto-scaling telemetry alerts"
       ],
-      gradient: "from-emerald-600 via-teal-600 to-cyan-600"
+      gradient: "from-emerald-600 via-teal-600 to-cyan-600",
+      role: "Cloud DevOps & Platform Engineer",
+      timeTaken: "2 Months",
+      clientOrDomain: "Kubernetes Cloud Infrastructure & Cost Optimization",
+      teamSize: "Solo Engineer",
+      challenges: [
+        "Replacing lagging CPU metrics with predictive Kafka lag regressions",
+        "Preventing scaling oscillation (flapping) during bursty webhook deliveries",
+        "Safe integration with existing AWS EKS production clusters"
+      ],
+      deliverables: [
+        "Production-ready Kubernetes Operator & CRD built using Go Operator SDK",
+        "Time-series forecasting module that scales worker fleets 3 minutes in advance",
+        "Reduced monthly cloud computing spend by 38% while achieving zero queue backpressure drops"
+      ]
     },
     {
       id: "cloud-pulse-telemetry",
@@ -309,7 +406,21 @@ export const portfolioData: PortfolioData = {
         "Interactive cost heatmaps identifying orphaned EBS volumes and idle RDS instances",
         "Exportable PDF executive summaries for SOC2 and ISO27001 readiness"
       ],
-      gradient: "from-amber-600 via-orange-600 to-red-500"
+      gradient: "from-amber-600 via-orange-600 to-red-500",
+      role: "Full-Stack Engineer & Cloud Architect",
+      timeTaken: "3 Months",
+      clientOrDomain: "Enterprise Multi-Cloud Asset & Security Governance",
+      teamSize: "Lead Engineer + 1 Frontend Collaborator",
+      challenges: [
+        "Aggregating billing, resource health, and security metrics across AWS, GCP, and DigitalOcean",
+        "Real-time CIS benchmark vulnerability scanning without API rate-limit throttling",
+        "Exporting complex dynamic cost heatmaps into high-resolution executive audit PDFs"
+      ],
+      deliverables: [
+        "Unified multi-cloud command center dashboard built with React and Tailwind CSS",
+        "Automated background cron microservices for cost analysis and orphan asset detection",
+        "Exportable SOC2 and ISO27001 executive compliance reports"
+      ]
     },
     {
       id: "trackit-mobile",
@@ -327,7 +438,21 @@ export const portfolioData: PortfolioData = {
         "Custom micro-animations for streak celebrations and habit completion rings",
         "Biometric authentication (FaceID / Fingerprint) integration"
       ],
-      gradient: "from-violet-600 via-indigo-600 to-blue-600"
+      gradient: "from-violet-600 via-indigo-600 to-blue-600",
+      role: "Mobile Applications Engineer",
+      timeTaken: "6 Weeks",
+      clientOrDomain: "HealthTech & Cross-Platform Productivity",
+      teamSize: "Solo Mobile Developer",
+      challenges: [
+        "Seamless offline-first SQLite synchronization when network drops intermittently",
+        "Fluid 60fps micro-animations on both low-end Android and modern iOS devices",
+        "Secure biometric authentication integrated into cross-platform state stores"
+      ],
+      deliverables: [
+        "Cross-platform iOS and Android mobile app built with React Native & Expo",
+        "Local-first SQLite syncing engine with conflict resolution",
+        "4.8-star rated application with 15k+ active downloads"
+      ]
     },
     {
       id: "algorunner-cli",
@@ -345,7 +470,21 @@ export const portfolioData: PortfolioData = {
         "Direct export to GitHub markdown tables and animated SVG charts",
         "Zero external native dependencies for seamless cross-platform installation"
       ],
-      gradient: "from-slate-700 via-zinc-800 to-neutral-900"
+      gradient: "from-slate-700 via-zinc-800 to-neutral-900",
+      role: "Open Source Creator & Systems Tooling Developer",
+      timeTaken: "3 Weeks",
+      clientOrDomain: "Developer Ergonomics & Algorithmic Profiling",
+      teamSize: "Sole Author",
+      challenges: [
+        "Capturing V8 heap memory allocations with negligible benchmark overhead",
+        "Generating clean, lightweight standalone SVG flamegraphs without heavy external dependencies",
+        "Cross-platform compatibility across Linux, macOS, and Windows terminal environments"
+      ],
+      deliverables: [
+        "Published npm CLI utility with over 25k+ monthly downloads",
+        "Interactive SVG flamegraph visualizer for algorithmic memory bottlenecks",
+        "Automated GitHub Actions CI/CD matrix testing across Node.js versions"
+      ]
     },
     {
       id: "neural-flow-analytics",
@@ -363,7 +502,21 @@ export const portfolioData: PortfolioData = {
         "Interactive HTML5 canvas visualization of neural network layer weights",
         "Automated model export to ONNX runtime for ultra-low latency inference"
       ],
-      gradient: "from-cyan-600 via-blue-600 to-indigo-600"
+      gradient: "from-cyan-600 via-blue-600 to-indigo-600",
+      role: "AI/ML Systems & Full-Stack Engineer",
+      timeTaken: "3 Months",
+      clientOrDomain: "Industrial IoT & Real-Time AI Telemetry",
+      teamSize: "Core Team of 3 Engineers",
+      challenges: [
+        "Processing 100,000 telemetry events/sec with sub-50ms inference latency",
+        "Visualizing complex multidimensional neural network tensor weights on an HTML5 canvas",
+        "Exporting PyTorch models to ONNX runtime for low-latency edge deployment"
+      ],
+      deliverables: [
+        "FastAPI streaming inference service with Redis Pub/Sub backplane",
+        "Real-time canvas dashboard rendering high-fps neural telemetry graphs",
+        "Automated threshold anomaly alert dispatching to Slack and webhooks"
+      ]
     },
     {
       id: "hyper-store-db",
@@ -381,7 +534,21 @@ export const portfolioData: PortfolioData = {
         "Zero-downtime cluster node re-balancing under heavy write workloads",
         "Low-latency gRPC RPC interface with multi-region state replication"
       ],
-      gradient: "from-emerald-600 via-teal-600 to-indigo-600"
+      gradient: "from-emerald-600 via-teal-600 to-indigo-600",
+      role: "Distributed Systems Engineer",
+      timeTaken: "4 Months",
+      clientOrDomain: "Distributed Storage & Consensus Infrastructure",
+      teamSize: "Research Project / Sole Author",
+      challenges: [
+        "Ensuring strict Raft leader election and log compaction under network partitions",
+        "Designing low-latency LSM-tree storage engine layered atop RocksDB",
+        "Zero-downtime cluster rebalancing when nodes join or leave dynamically"
+      ],
+      deliverables: [
+        "Go implementation of the Raft consensus distributed storage protocol",
+        "High-performance gRPC interface with multi-region state replication",
+        "Comprehensive fuzz testing suite and chaos testing simulator"
+      ]
     }
   ],
 
@@ -510,14 +677,44 @@ export const portfolioData: PortfolioData = {
       role: "Engineering Director",
       company: "CISIN Labs",
       content: "Sumiran is the rare caliber of engineer who can design a complex distributed backend architecture and simultaneously polish frontend micro-interactions to perfection. His technical rigor and leadership elevated our entire engineering team's delivery pace.",
-      avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+      avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+      rating: 5,
+      project: "Nexus Service Mesh & Gateway",
+      verified: true,
+      date: "2024"
     },
     {
       name: "Sarah Chen",
       role: "Principal Product Manager",
       company: "TechScale Innovations",
       content: "Working with Sumiran was an absolute pleasure. He doesn't just write code—he deeply understands the product domain, spots edge cases before they happen, and delivers rock-solid features ahead of schedule.",
-      avatarUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80"
+      avatarUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
+      rating: 5,
+      project: "DevSync Collaborative Platform",
+      verified: true,
+      date: "2023"
+    },
+    {
+      name: "Marcus Vance",
+      role: "Head of Infrastructure & Security",
+      company: "Aether Cloud Systems",
+      content: "Sumiran re-architected our Kubernetes scaling strategy with proactive queue-lag forecasting. He saved us almost 40% in compute overhead in the first quarter alone, while maintaining a spotless 99.99% service availability.",
+      avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      rating: 5,
+      project: "Kubernetes Event-Driven Autoscaler",
+      verified: true,
+      date: "2024"
+    },
+    {
+      name: "Elena Rostova",
+      role: "Founder & CTO",
+      company: "Veloce HealthTech",
+      content: "Sumiran delivered our cross-platform mobile suite with remarkable craftsmanship. The offline-first SQLite sync is bulletproof, the animations feel native and silky smooth, and customer reviews jumped to 4.8 stars.",
+      avatarUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
+      rating: 5,
+      project: "TrackIt Cross-Platform Application",
+      verified: true,
+      date: "2024"
     }
   ]
 };

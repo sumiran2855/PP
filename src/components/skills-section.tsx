@@ -11,6 +11,7 @@ import {
   CheckCircle2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Scroll3DWrapper } from "./ui/scroll-3d-wrapper";
 
 const CATEGORY_COMMANDS: Record<string, string> = {
   Frontend: "filter --frontend",
@@ -20,6 +21,16 @@ const CATEGORY_COMMANDS: Record<string, string> = {
   "System Design": "filter --system-design",
   "Mobile Development": "filter --mobile",
   "Tools & Technologies": "filter --tools",
+};
+
+const SHORT_CATEGORY_COMMANDS: Record<string, string> = {
+  Frontend: "$frontend",
+  Backend: "$backend",
+  Databases: "$databases",
+  "DevOps & Cloud": "$devops",
+  "System Design": "$system",
+  "Mobile Development": "$mobile",
+  "Tools & Technologies": "$tools",
 };
 
 export function SkillsSection() {
@@ -73,7 +84,7 @@ export function SkillsSection() {
   }, [allSkillsWithCategory, selectedCategory, searchQuery]);
 
   return (
-    <section id="skills" className="py-24 sm:py-32 relative overflow-hidden bg-gradient-to-b from-[#f1f5f9] via-[#f8fafc] to-[#eef2ff] dark:from-[#080b14] dark:via-[#0e1324] dark:to-[#090d1a] transition-colors duration-500">
+    <section id="skills" className="scroll-mt-28 sm:scroll-mt-32 py-20 sm:py-32 relative overflow-hidden bg-gradient-to-b from-[#f1f5f9] via-[#f8fafc] to-[#eef2ff] dark:from-[#080b14] dark:via-[#0e1324] dark:to-[#090d1a] transition-colors duration-500">
       {/* Ambient Aurora Glow Lights */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[850px] h-[350px] sm:h-[450px] bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-cyan-400/20 dark:from-indigo-600/25 dark:via-purple-600/20 dark:to-cyan-400/20 blur-[140px] rounded-full pointer-events-none -z-10" />
 
@@ -115,25 +126,29 @@ export function SkillsSection() {
           className="rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-[#0f1424] text-slate-200 shadow-xl p-4 sm:p-5 mb-8 overflow-hidden font-mono text-xs"
         >
           {/* Terminal Window Header */}
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800 select-none">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-rose-500" />
-              <div className="w-3 h-3 rounded-full bg-amber-500" />
-              <div className="w-3 h-3 rounded-full bg-emerald-500" />
-              <span className="text-[11px] text-slate-400 ml-2 flex items-center gap-1.5">
-                <Terminal className="w-3.5 h-3.5 text-indigo-400" />
-                sumiran@dev:~/skills_inventory
+          <div className="flex items-center justify-between pb-3 border-b border-slate-800 select-none gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
+              <div className="flex items-center gap-1.5 shrink-0">
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-500" />
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500" />
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500" />
+              </div>
+              <span className="text-[11px] text-slate-400 ml-1 sm:ml-2 flex items-center gap-1.5 truncate">
+                <Terminal className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                <span className="hidden sm:inline">sumiran@dev:~/skills_inventory</span>
+                <span className="sm:hidden">~/skills</span>
               </span>
             </div>
-            <span className="text-[10px] text-emerald-400 font-semibold px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
-              ● Node Filter Active
+            <span className="shrink-0 whitespace-nowrap text-[10px] text-emerald-400 font-semibold px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
+              <span className="hidden sm:inline">● Node Filter Active</span>
+              <span className="sm:hidden">● Active</span>
             </span>
           </div>
 
           {/* Terminal Controls Bar: Category Command Buttons */}
           <div className="py-3 space-y-2.5">
-            <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="text-slate-400">run:</span>
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
+              <span className="text-slate-400 text-xs shrink-0">run:</span>
               {categories.map((cat) => {
                 const isSelected = selectedCategory === cat;
                 const cmd = CATEGORY_COMMANDS[cat] || `filter --${cat.toLowerCase()}`;
@@ -142,13 +157,14 @@ export function SkillsSection() {
                     key={cat}
                     onClick={() => handleCategorySelect(cat)}
                     className={cn(
-                      "px-3 py-1.5 rounded-xl border transition-all cursor-pointer font-mono text-xs",
+                      "px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl border transition-all cursor-pointer font-mono text-[11px] sm:text-xs",
                       isSelected
                         ? "border-indigo-500 bg-indigo-500/20 text-indigo-300 font-bold shadow-xs"
                         : "border-slate-800 bg-slate-900/80 text-slate-400 hover:text-white hover:border-slate-700"
                     )}
                   >
-                    ${cmd}
+                    <span className="hidden sm:inline">${cmd}</span>
+                    <span className="sm:hidden">{SHORT_CATEGORY_COMMANDS[cat] || `$${cat.toLowerCase()}`}</span>
                   </button>
                 );
               })}
@@ -156,9 +172,9 @@ export function SkillsSection() {
 
             {/* Terminal Live Output Log Line + Built-in Search Bar */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2.5 border-t border-slate-800/80">
-              <p className="text-emerald-400 flex items-center gap-2 text-[11px] sm:text-xs">
-                <span className="text-indigo-400 font-bold">➜</span>
-                <span>{activeCommandLog}</span>
+              <p className="text-emerald-400 flex items-center gap-2 text-[11px] sm:text-xs min-w-0">
+                <span className="text-indigo-400 font-bold shrink-0">➜</span>
+                <span className="truncate">{activeCommandLog}</span>
               </p>
 
               {/* Terminal Search Prompt Input */}
@@ -192,64 +208,66 @@ export function SkillsSection() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">
-            <AnimatePresence mode="popLayout">
-              {filteredSkills.map((skill, idx) => {
-                const isAdvanced = skill.level === "Advanced";
-                const isProficient = skill.level === "Proficient";
+          <Scroll3DWrapper intensity={4} depth={20}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">
+              <AnimatePresence mode="popLayout">
+                {filteredSkills.map((skill, idx) => {
+                  const isAdvanced = skill.level === "Advanced";
+                  const isProficient = skill.level === "Proficient";
 
-                return (
-                  <motion.div
-                    key={`${skill.category}-${skill.name}`}
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.2, delay: idx * 0.015 }}
-                    className="group relative rounded-xl border border-slate-200/90 dark:border-slate-800/90 bg-white/90 dark:bg-slate-950/90 backdrop-blur-2xl p-3.5 shadow-xs hover:shadow-lg hover:shadow-indigo-500/10 hover:border-indigo-500/40 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between"
-                  >
-                    <div>
-                      {/* Top Node Header: Category Tag & Status Beacon */}
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 truncate max-w-[120px]">
-                          {skill.category}
-                        </span>
+                  return (
+                    <motion.div
+                      key={`${skill.category}-${skill.name}`}
+                      layout
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.2, delay: idx * 0.015 }}
+                      className="group relative rounded-xl border border-slate-200/90 dark:border-slate-800/90 bg-white/90 dark:bg-slate-950/90 backdrop-blur-2xl p-3.5 shadow-xs hover:shadow-lg hover:shadow-indigo-500/10 hover:border-indigo-500/40 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between"
+                    >
+                      <div>
+                        {/* Top Node Header: Category Tag & Status Beacon */}
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 truncate max-w-[120px]">
+                            {skill.category}
+                          </span>
 
-                        <span
-                          className={cn(
-                            "w-2 h-2 rounded-full shrink-0",
-                            isAdvanced
-                              ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)] animate-pulse"
-                              : isProficient
-                              ? "bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)]"
-                              : "bg-cyan-500 shadow-[0_0_6px_rgba(6,182,212,0.6)]"
-                          )}
-                          title={`Proficiency: ${skill.level}`}
-                        />
+                          <span
+                            className={cn(
+                              "w-2 h-2 rounded-full shrink-0",
+                              isAdvanced
+                                ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)] animate-pulse"
+                                : isProficient
+                                ? "bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)]"
+                                : "bg-cyan-500 shadow-[0_0_6px_rgba(6,182,212,0.6)]"
+                            )}
+                            title={`Proficiency: ${skill.level}`}
+                          />
+                        </div>
+
+                        {/* Technology Title */}
+                        <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                          {skill.name}
+                        </h3>
                       </div>
 
-                      {/* Technology Title */}
-                      <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                        {skill.name}
-                      </h3>
-                    </div>
-
-                    {/* Bottom Metadata Pill Row */}
-                    <div className="pt-2.5 mt-2.5 border-t border-slate-200/70 dark:border-slate-800/70 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-mono">
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">
-                        {skill.level}
-                      </span>
-                      {skill.tag && (
-                        <span className="text-[10px] text-indigo-500 font-semibold px-1.5 py-0.2 rounded bg-indigo-500/10 border border-indigo-500/20">
-                          {skill.tag}
+                      {/* Bottom Metadata Pill Row */}
+                      <div className="pt-2.5 mt-2.5 border-t border-slate-200/70 dark:border-slate-800/70 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                        <span className="font-semibold text-slate-700 dark:text-slate-300">
+                          {skill.level}
                         </span>
-                      )}
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
-          </div>
+                        {skill.tag && (
+                          <span className="text-[10px] text-indigo-500 font-semibold px-1.5 py-0.2 rounded bg-indigo-500/10 border border-indigo-500/20">
+                            {skill.tag}
+                          </span>
+                        )}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </div>
+          </Scroll3DWrapper>
         )}
 
         {/* TECH MATRIX STATS & LEGEND BANNER */}

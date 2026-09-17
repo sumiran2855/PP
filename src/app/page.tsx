@@ -4,6 +4,7 @@ import { AboutSection } from "@/components/about-section";
 import { SkillsSection } from "@/components/skills-section";
 import { ProjectsSection } from "@/components/projects-section";
 import { ExperienceSection } from "@/components/experience-section";
+import { CustomerFeedbackSection } from "@/components/customer-feedback-section";
 import { CurrentFocusSection } from "@/components/current-focus-section";
 import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
@@ -21,6 +22,7 @@ export default function Home() {
         <SkillsSection />
         <ProjectsSection />
         <ExperienceSection />
+        <CustomerFeedbackSection />
         <CurrentFocusSection />
         <ContactSection />
       </main>
